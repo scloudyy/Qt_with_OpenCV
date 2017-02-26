@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/testQT_OPENCV"/>
+    <qresource prefix="/images">
+        <file alias="open">images/add.png</file>
+        <file alias="setting">images/setting.png</file>
+    </qresource>
+</RCC>

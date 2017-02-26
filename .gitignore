@@ -1,0 +1,7 @@
+/x64
+/testQT_OPENCV/x64
+/testQT_OPENCV/GeneratedFiles
+*.suo
+*.sdf
+*.opensdf
+image.jpg

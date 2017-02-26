@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IncludePath>D:\OpenCV3.1\opencv\build\include;D:\OpenCV3.1\opencv\build\include\opencv;D:\OpenCV3.1\opencv\build\include\opencv2;$(IncludePath)</IncludePath>
+    <ReferencePath>D:\OpenCV3.1\opencv\build\x64\vc12\bin;D:\OpenCV3.1\opencv\build\x64\vc12\lib;$(ReferencePath)</ReferencePath>
+    <LibraryPath>D:\OpenCV3.1\opencv\build\x64\vc12\bin;D:\OpenCV3.1\opencv\build\x64\vc12\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>opencv_world310.lib;opencv_world310d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
