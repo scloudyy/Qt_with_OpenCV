@@ -1,7 +1,7 @@
-#ifndef TESTQT_OPENCV_H
+ï»¿#ifndef TESTQT_OPENCV_H
 #define TESTQT_OPENCV_H
 
-#include <QtWidgets/QMainWindow>  
+#include <QtWidgets/QMainWindow>
 #include <QDialog>
 #include <QDebug>
 #include <QSpinBox>
@@ -9,8 +9,8 @@
 #include <QPushButton>
 #include "ui_testqt_opencv.h"
 
-#include <opencv/cv.hpp>  
-#include <opencv2/highgui.hpp> 
+#include <opencv/cv.hpp>
+#include <opencv2/highgui.hpp>
 
 
 class testQT_OPENCV : public QMainWindow
@@ -26,16 +26,17 @@ private:
 	int age;
 	QAction *openAction;
 	QAction *openModelessDialog;
-	void changeUserAge(int);  // ¸üĞÂprivate int age²¢¸üĞÂtextEdit
+    QAction *openFileDialog;
+	void changeUserAge(int);  // æ›´æ–°private int ageå¹¶æ›´æ–°textEdit
 	cv::Mat image;
 
 signals:
-	void sendUserAge(int);  // ÓÃÒÔ´«µİageµÄĞÅºÅ
+	void sendUserAge(int);  // ç”¨ä»¥ä¼ é€’ageçš„ä¿¡å·
 
 private slots:
-	void actionOpenModelessDialog(int);  // µã»÷open modeless dialogÕâ¸öactionºó´¥·¢µÄ²Ûº¯Êı
-	void actionOpenModalDialog();  // µã»÷open modal dialogÕâ¸öactionºó´¥·¢µÄ²Ûº¯Êı
-	void openImageClicked();  // µã»÷LoadÕâ¸öButtonºó´¥·¢µÄ²Ûº¯Êı
+	void actionOpenModelessDialog(int);  // ç‚¹å‡»open modeless dialogè¿™ä¸ªactionåè§¦å‘çš„æ§½å‡½æ•°
+	void actionOpenModalDialog();  // ç‚¹å‡»open modal dialogè¿™ä¸ªactionåè§¦å‘çš„æ§½å‡½æ•°
+	void openImageClicked();  // ç‚¹å‡»Loadè¿™ä¸ªButtonåè§¦å‘çš„æ§½å‡½æ•°
 };
 
 class ModelessDialog : public QDialog
@@ -52,8 +53,8 @@ private:
 	QPushButton* buttonAccept;
 
 signals:
-	void openModelessDialog(int);  // µ±¿ªÆôdialogµÄaction±»triggerºó·¢³ö´ËĞÅºÅ£¬ÓÃÒÔÏò¹¹Ôìº¯Êı´«Öµ
-	void closeModelessDialog(int);  // µ±¹Ø±ÕdialogµÄbutton±»clickºó·¢³ö´ËĞÅºÅ£¬ÓÃÒÔÏòMainWindow´«Öµ
+	void openModelessDialog(int);  // å½“å¼€å¯dialogçš„actionè¢«triggeråå‘å‡ºæ­¤ä¿¡å·ï¼Œç”¨ä»¥å‘æ„é€ å‡½æ•°ä¼ å€¼
+	void closeModelessDialog(int);  // å½“å…³é—­dialogçš„buttonè¢«clickåå‘å‡ºæ­¤ä¿¡å·ï¼Œç”¨ä»¥å‘MainWindowä¼ å€¼
 };
 
 #endif // TESTQT_OPENCV_H

@@ -1,4 +1,4 @@
-#include <Qlabel>
+ï»¿#include <Qlabel>
 #include <Qmenubar>
 #include <QMessageBox>
 #include <QStatusBar>
@@ -8,56 +8,61 @@
 #include <iostream>
 
 #include "testqt_opencv.h"
+#include "fileDialog.h"
 
 testQT_OPENCV::testQT_OPENCV(QWidget *parent)
 	: QMainWindow(parent), age(50)
 {
 	ui.setupUi(this);
 	ui.lineEdit->setText(QString::number(age));
-	setWindowTitle(tr("Main Window"));        // ÎÄ±¾Ê¹ÓÃtr()º¯Êı£¬ÕâÊÇÒ»¸öÓÃÓÚ Qt ¹ú¼Ê»¯µÄº¯Êı¡£
-											  // ¿ÉÒÔÊ¹ÓÃ Qt Ìá¹©µÄ¹ú¼Ê»¯¹¤¾ß£¬½«tr()º¯ÊıµÄ×Ö·û´®ÌáÈ¡³öÀ´£¬½øĞĞ¹ú¼Ê»¯
-											  // tr()º¯ÊıÀïÃæÒ»°ãÊÇÓ¢ÎÄÎÄ±¾¡£
+	setWindowTitle(tr("Main Window"));        // æ–‡æœ¬ä½¿ç”¨tr()å‡½æ•°ï¼Œè¿™æ˜¯ä¸€ä¸ªç”¨äº Qt å›½é™…åŒ–çš„å‡½æ•°ã€‚
+											  // å¯ä»¥ä½¿ç”¨ Qt æä¾›çš„å›½é™…åŒ–å·¥å…·ï¼Œå°†tr()å‡½æ•°çš„å­—ç¬¦ä¸²æå–å‡ºæ¥ï¼Œè¿›è¡Œå›½é™…åŒ–
+											  // tr()å‡½æ•°é‡Œé¢ä¸€èˆ¬æ˜¯è‹±æ–‡æ–‡æœ¬ã€‚
 
-	openAction = new QAction(QIcon(tr(":/images/open")), tr("&Modal..."), this);   // QActionÀà´ú±íÁË´°¿ÚµÄÒ»¸ö¡°¶¯×÷¡±£¬¿ÉÏÔÊ¾ÔÚ²Ëµ¥£¬Ò²¿ÉÔÚ¹¤¾ßÀ¸£¬ÊÇ³éÏó³öµÄ¹«¹²¶¯×÷
-																				   // ÔÚ¶ÑÉÏ´´½¨ÁËopenAction¶ÔÏó
-																				   // QIcon´«ÈëÖµÊÇÒ»¸ö×Ö·û´®£¬ÒÔ : ¿ªÊ¼ÒâÎ¶×Å´Ó×ÊÔ´ÎÄ¼şÖĞ²éÕÒ×ÊÔ´
-																				   // µÚ¶ş¸ö²ÎÊıÎÄ±¾ÖµÇ°ÃæÓĞÒ»¸ö &£¬ÒâÎ¶×ÅÕâ½«³ÉÎªÒ»¸ö¿ì½İ¼ü
-																				   // C++ ÒªÇó¶ÑÉÏÃæ´´½¨µÄ¶ÔÏó±ØĞëÊÍ·Å£¬Qt µ±È»Ò²ÊÇ¡£ÕâÀï´«ÈëÁË this Ö¸Õë×÷Îª parent£¬Qt ±£Ö¤£¬ÔÚ parent Îö¹¹Ê±£¬ËùÓĞ×ÓÔªËØÈ«²¿Îö¹¹¡£
-																				   // ÓÉÓÚ MainWindow ÊÇ½¨Á¢ÔÚÕ»ÉÏµÄ£¬µ± main() º¯ÊıÍË³öÊ±£¬MainWindow »á±»×Ô¶¯Îö¹¹£¬´ËÊ±£¬ËùÓĞÒÔÆäÎª parent µÄ¶ÔÏóÈ«²¿×Ô¶¯Îö¹¹¡£
-	/* Qt ×ÊÔ´ÏµÍ³ÊÇÒ»¸ö¿çÆ½Ì¨µÄ×ÊÔ´»úÖÆ£¬ÓÃÓÚ½«³ÌĞòÔËĞĞÊ±ËùĞèÒªµÄ×ÊÔ´ÒÔ¶ş½øÖÆµÄĞÎÊ½´æ´¢ÓÚ¿ÉÖ´ĞĞÎÄ¼şÄÚ²¿¡£ */
-	/* QObjectÊÇÒÔ¶ÔÏóÊ÷µÄĞÎÊ½×éÖ¯ÆğÀ´µÄ¡£µ±ÔÚ¶ÑÉÏ´´½¨Ò»¸öQObject¶ÔÏóÊ±£¬»á¿´µ½QObjectµÄ¹¹Ôìº¯Êı½ÓÊÕÒ»¸öQObjectÖ¸Õë×÷Îª²ÎÊı£¨¸¸¶ÔÏóÖ¸Õë£©¡£
-	   ´´½¨µÄQObject¶ÔÏó»á×Ô¶¯Ìí¼Óµ½Æä¸¸¶ÔÏóµÄchildren()ÁĞ±í¡£µ±¸¸¶ÔÏóÎö¹¹µÄÊ±ºò£¬Õâ¸öÁĞ±íÖĞµÄËùÓĞ¶ÔÏóÒ²»á±»Îö¹¹¡££¨×¢Òâ£¬ÕâÀïµÄ¸¸¶ÔÏó²¢²»ÊÇ¼Ì³ĞÒâÒåÉÏµÄ¸¸Àà£¡£©
-       ÈÎºÎ¶ÔÏóÊ÷ÖĞµÄ QObject¶ÔÏó delete µÄÊ±ºò£¬Èç¹ûÕâ¸ö¶ÔÏóÓĞ parent£¬Ôò×Ô¶¯½«Æä´Ó parent µÄchildren()ÁĞ±íÖĞÉ¾³ı£»Èç¹ûÓĞº¢×Ó£¬Ôò×Ô¶¯ delete Ã¿Ò»¸öº¢×Ó¡£
-	   Qt ±£Ö¤Ã»ÓĞQObject»á±» delete Á½´Î£¬ÕâÊÇÓÉÎö¹¹Ë³Ğò¾ö¶¨µÄ¡£
-	   mainÖĞ×îÍâ²ãµÄ¶ÔÏó²»Ó¦¸Ã´´½¨ÔÚ¶Ñ¿Õ¼ä¶øÓ¦¸Ã´´½¨ÔÚÕ»¿Õ¼ä£¬mainÔÚ¶Ñ¿Õ¼ä´´½¨¶ÔÏóÊ±Ó¦¸Ã½«×îÍâ²ãÕ»¿Õ¼äµÄ¶ÔÏó×÷Îªparent
-	   Èç¹û parent Îª¿ÕµÄ»°£¬¶Ñ¿Õ¼äÉÏµÄQObjectÒ²ÊÇÒª×Ô¼º delete µÄ
+	openAction = new QAction(QIcon(tr(":/images/open")), tr("&Modal..."), this);   // QActionç±»ä»£è¡¨äº†çª—å£çš„ä¸€ä¸ªâ€œåŠ¨ä½œâ€ï¼Œå¯æ˜¾ç¤ºåœ¨èœå•ï¼Œä¹Ÿå¯åœ¨å·¥å…·æ ï¼Œæ˜¯æŠ½è±¡å‡ºçš„å…¬å…±åŠ¨ä½œ
+																				   // åœ¨å †ä¸Šåˆ›å»ºäº†openActionå¯¹è±¡
+																				   // QIconä¼ å…¥å€¼æ˜¯ä¸€ä¸ªå­—ç¬¦ä¸²ï¼Œä»¥ : å¼€å§‹æ„å‘³ç€ä»èµ„æºæ–‡ä»¶ä¸­æŸ¥æ‰¾èµ„æº
+																				   // ç¬¬äºŒä¸ªå‚æ•°æ–‡æœ¬å€¼å‰é¢æœ‰ä¸€ä¸ª &ï¼Œæ„å‘³ç€è¿™å°†æˆä¸ºä¸€ä¸ªå¿«æ·é”®
+																				   // C++ è¦æ±‚å †ä¸Šé¢åˆ›å»ºçš„å¯¹è±¡å¿…é¡»é‡Šæ”¾ï¼ŒQt å½“ç„¶ä¹Ÿæ˜¯ã€‚è¿™é‡Œä¼ å…¥äº† this æŒ‡é’ˆä½œä¸º parentï¼ŒQt ä¿è¯ï¼Œåœ¨ parent ææ„æ—¶ï¼Œæ‰€æœ‰å­å…ƒç´ å…¨éƒ¨ææ„ã€‚
+																				   // ç”±äº MainWindow æ˜¯å»ºç«‹åœ¨æ ˆä¸Šçš„ï¼Œå½“ main() å‡½æ•°é€€å‡ºæ—¶ï¼ŒMainWindow ä¼šè¢«è‡ªåŠ¨ææ„ï¼Œæ­¤æ—¶ï¼Œæ‰€æœ‰ä»¥å…¶ä¸º parent çš„å¯¹è±¡å…¨éƒ¨è‡ªåŠ¨ææ„ã€‚
+	/* Qt èµ„æºç³»ç»Ÿæ˜¯ä¸€ä¸ªè·¨å¹³å°çš„èµ„æºæœºåˆ¶ï¼Œç”¨äºå°†ç¨‹åºè¿è¡Œæ—¶æ‰€éœ€è¦çš„èµ„æºä»¥äºŒè¿›åˆ¶çš„å½¢å¼å­˜å‚¨äºå¯æ‰§è¡Œæ–‡ä»¶å†…éƒ¨ã€‚ */
+	/* QObjectæ˜¯ä»¥å¯¹è±¡æ ‘çš„å½¢å¼ç»„ç»‡èµ·æ¥çš„ã€‚å½“åœ¨å †ä¸Šåˆ›å»ºä¸€ä¸ªQObjectå¯¹è±¡æ—¶ï¼Œä¼šçœ‹åˆ°QObjectçš„æ„é€ å‡½æ•°æ¥æ”¶ä¸€ä¸ªQObjectæŒ‡é’ˆä½œä¸ºå‚æ•°ï¼ˆçˆ¶å¯¹è±¡æŒ‡é’ˆï¼‰ã€‚
+	   åˆ›å»ºçš„QObjectå¯¹è±¡ä¼šè‡ªåŠ¨æ·»åŠ åˆ°å…¶çˆ¶å¯¹è±¡çš„children()åˆ—è¡¨ã€‚å½“çˆ¶å¯¹è±¡ææ„çš„æ—¶å€™ï¼Œè¿™ä¸ªåˆ—è¡¨ä¸­çš„æ‰€æœ‰å¯¹è±¡ä¹Ÿä¼šè¢«ææ„ã€‚ï¼ˆæ³¨æ„ï¼Œè¿™é‡Œçš„çˆ¶å¯¹è±¡å¹¶ä¸æ˜¯ç»§æ‰¿æ„ä¹‰ä¸Šçš„çˆ¶ç±»ï¼ï¼‰
+       ä»»ä½•å¯¹è±¡æ ‘ä¸­çš„ QObjectå¯¹è±¡ delete çš„æ—¶å€™ï¼Œå¦‚æœè¿™ä¸ªå¯¹è±¡æœ‰ parentï¼Œåˆ™è‡ªåŠ¨å°†å…¶ä» parent çš„children()åˆ—è¡¨ä¸­åˆ é™¤ï¼›å¦‚æœæœ‰å­©å­ï¼Œåˆ™è‡ªåŠ¨ delete æ¯ä¸€ä¸ªå­©å­ã€‚
+	   Qt ä¿è¯æ²¡æœ‰QObjectä¼šè¢« delete ä¸¤æ¬¡ï¼Œè¿™æ˜¯ç”±ææ„é¡ºåºå†³å®šçš„ã€‚
+	   mainä¸­æœ€å¤–å±‚çš„å¯¹è±¡ä¸åº”è¯¥åˆ›å»ºåœ¨å †ç©ºé—´è€Œåº”è¯¥åˆ›å»ºåœ¨æ ˆç©ºé—´ï¼Œmainåœ¨å †ç©ºé—´åˆ›å»ºå¯¹è±¡æ—¶åº”è¯¥å°†æœ€å¤–å±‚æ ˆç©ºé—´çš„å¯¹è±¡ä½œä¸ºparent
+	   å¦‚æœ parent ä¸ºç©ºçš„è¯ï¼Œå †ç©ºé—´ä¸Šçš„QObjectä¹Ÿæ˜¯è¦è‡ªå·± delete çš„
 	*/
 
-	openAction->setShortcuts(QKeySequence::Open);     // ÓÃÓÚËµÃ÷Õâ¸öQActionµÄ¿ì½İ¼ü¡£Qt µÄQKeySequence¶¨ÒåÁËºÜ¶àÄÚÖÃµÄ¿ì½İ¼ü£¬ÕâÊÇ Qt ¿çÆ½Ì¨ĞÔµÄÌåÏÖ£¬ÒòÎª PC ¼üÅÌºÍ Mac ¼üÅÌÊÇ²»Ò»ÑùµÄ
+	openAction->setShortcuts(QKeySequence::Open);     // ç”¨äºè¯´æ˜è¿™ä¸ªQActionçš„å¿«æ·é”®ã€‚Qt çš„QKeySequenceå®šä¹‰äº†å¾ˆå¤šå†…ç½®çš„å¿«æ·é”®ï¼Œè¿™æ˜¯ Qt è·¨å¹³å°æ€§çš„ä½“ç°ï¼Œå› ä¸º PC é”®ç›˜å’Œ Mac é”®ç›˜æ˜¯ä¸ä¸€æ ·çš„
 
-	openAction->setStatusTip(tr("Open a Modal Dialog"));   // ÊµÏÖÁËµ±ÓÃ»§Êó±ê»¬¹ıÕâ¸ö action Ê±£¬»áÔÚÖ÷´°¿ÚÏÂ·½µÄ×´Ì¬À¸ÏÔÊ¾ÏàÓ¦µÄÌáÊ¾¡£
+	openAction->setStatusTip(tr("Open a Modal Dialog"));   // å®ç°äº†å½“ç”¨æˆ·é¼ æ ‡æ»‘è¿‡è¿™ä¸ª action æ—¶ï¼Œä¼šåœ¨ä¸»çª—å£ä¸‹æ–¹çš„çŠ¶æ€æ æ˜¾ç¤ºç›¸åº”çš„æç¤ºã€‚
 
-	connect(openAction, &QAction::triggered, this, &testQT_OPENCV::actionOpenModalDialog);   // ½«Õâ¸öQActionµÄtriggered()ĞÅºÅÓëMainWindowÀàµÄopen()º¯ÊıÁ¬½ÓÆğÀ´
+	connect(openAction, &QAction::triggered, this, &testQT_OPENCV::actionOpenModalDialog);   // å°†è¿™ä¸ªQActionçš„triggered()ä¿¡å·ä¸MainWindowç±»çš„open()å‡½æ•°è¿æ¥èµ·æ¥
 
-	QMenu *file = menuBar()->addMenu(tr("&File"));   // menuBar()»á·µ»Ø´°¿ÚµÄ²Ëµ¥À¸£¬Èç¹ûÃ»ÓĞ²Ëµ¥À¸Ôò»áĞÂ´´½¨
-	file->addAction(openAction);                     // °ÑÕâ¸öQAction¶ÔÏóÌí¼Óµ½²Ëµ¥
-
-	QToolBar *toolBar = addToolBar(tr("&File"));   // ²Ëµ¥À¸Ö»ÓĞÒ»¸ö£¬µ«¹¤¾ßÀ¸¿ÉÄÜÓĞ¶à¸ö£¬ËùÒÔÒªÏÈaddToolBar()
-	toolBar->addAction(openAction);
-
-	// Ôö¼ÓSettingÑ¡Ïî
+	// å¢åŠ Settingé€‰é¡¹
 	openModelessDialog = new QAction(QIcon(tr(":/images/setting")), tr("&Modeless..."), this);
 	openModelessDialog->setShortcut(QKeySequence::Preferences);
 	openModelessDialog->setStatusTip(tr("Open a Modeless Dialog"));
 	QObject::connect(openModelessDialog, &QAction::triggered, [=](){emit sendUserAge(age);});
-		/* µ±openModelessDialog±»µã»÷Ê±£¬Æä·¢³öQAction::triggeredĞÅºÅ£¬ÄäÃûº¯Êı·¢³ösendUserAgeĞÅºÅ£¬½«µ±Ç°µÄageÖµ´«µİ³öÈ¥²¢¼¤»îactionOpenModelessDialog²Ûº¯Êı */
+		/* å½“openModelessDialogè¢«ç‚¹å‡»æ—¶ï¼Œå…¶å‘å‡ºQAction::triggeredä¿¡å·ï¼ŒåŒ¿åå‡½æ•°å‘å‡ºsendUserAgeä¿¡å·ï¼Œå°†å½“å‰çš„ageå€¼ä¼ é€’å‡ºå»å¹¶æ¿€æ´»actionOpenModelessDialogæ§½å‡½æ•° */
 	QObject::connect(this, &testQT_OPENCV::sendUserAge, this, &testQT_OPENCV::actionOpenModelessDialog);
-		/* ·¢³ösendUserAgeĞÅºÅºó£¬¹¹ÔìdialogµÄ²Ûº¯Êı±»¼¤»î£¬ÓÉÓÚsendUserAge¸½´øÁËageÖµËùÒÔ³É¹¦Ïòdialog½øĞĞ´«Öµ */
-	QMenu *set = menuBar()->addMenu(tr("Setting"));
-	set->addAction(openModelessDialog);
-	toolBar->addAction(openModelessDialog);
+		/* å‘å‡ºsendUserAgeä¿¡å·åï¼Œæ„é€ dialogçš„æ§½å‡½æ•°è¢«æ¿€æ´»ï¼Œç”±äºsendUserAgeé™„å¸¦äº†ageå€¼æ‰€ä»¥æˆåŠŸå‘dialogè¿›è¡Œä¼ å€¼ */
 
-	statusBar();  // ×´Ì¬À¸£¬ÔòÊÇ³öÏÖÔÚ´°¿Ú×îÏÂ·½£¬ÓÃÓÚÏÔÊ¾¶¯×÷¶ÔÏóµÄÌáÊ¾ĞÅÏ¢¡£QStatusBar¼Ì³ĞÁËQWidget£¬Òò´Ë£¬ÎÒÃÇ¿ÉÒÔ½«ÆäËüÈÎÒâQWidget×ÓÀàÌí¼Óµ½×´Ì¬À¸
+    openFileDialog = new QAction(tr("&FileDialog..."), this);
+    QObject::connect(openFileDialog, &QAction::triggered, [=](){FileDialog* f = new FileDialog(this); f->show();});
+
+    QMenu *file = menuBar()->addMenu(tr("&File"));   // menuBar()ä¼šè¿”å›çª—å£çš„èœå•æ ï¼Œå¦‚æœæ²¡æœ‰èœå•æ åˆ™ä¼šæ–°åˆ›å»º
+    file->addAction(openAction);                     // æŠŠè¿™ä¸ªQActionå¯¹è±¡æ·»åŠ åˆ°èœå•
+    QMenu *set = menuBar()->addMenu(tr("Setting"));
+    set->addAction(openModelessDialog);
+
+    QToolBar *toolBar = addToolBar(tr("&File"));   // èœå•æ åªæœ‰ä¸€ä¸ªï¼Œä½†å·¥å…·æ å¯èƒ½æœ‰å¤šä¸ªï¼Œæ‰€ä»¥è¦å…ˆaddToolBar()
+    toolBar->addAction(openAction);
+    toolBar->addAction(openModelessDialog);
+    toolBar->addAction(openFileDialog);
+
+	statusBar();  // çŠ¶æ€æ ï¼Œåˆ™æ˜¯å‡ºç°åœ¨çª—å£æœ€ä¸‹æ–¹ï¼Œç”¨äºæ˜¾ç¤ºåŠ¨ä½œå¯¹è±¡çš„æç¤ºä¿¡æ¯ã€‚QStatusBarç»§æ‰¿äº†QWidgetï¼Œå› æ­¤ï¼Œæˆ‘ä»¬å¯ä»¥å°†å…¶å®ƒä»»æ„QWidgetå­ç±»æ·»åŠ åˆ°çŠ¶æ€æ 
 }
 
 void testQT_OPENCV::changeUserAge(int age) {
@@ -66,7 +71,7 @@ void testQT_OPENCV::changeUserAge(int age) {
 }
 
 ModelessDialog::ModelessDialog(int age, QWidget *parent) : QDialog(parent) {
-  spinBox = new QSpinBox(this);
+    spinBox = new QSpinBox(this);
 	slider = new QSlider(Qt::Horizontal, this);
 	buttonAccept = new QPushButton("Accept", this);
 	spinBox->setRange(0, 100);
@@ -76,14 +81,14 @@ ModelessDialog::ModelessDialog(int age, QWidget *parent) : QDialog(parent) {
 
 	QObject::connect(slider, &QSlider::valueChanged, spinBox, &QSpinBox::setValue);
 
-	/* QSpinBoxÓĞÁ½¸öĞÅºÅ£º
+	/* QSpinBoxæœ‰ä¸¤ä¸ªä¿¡å·ï¼š
 	void valueChanged(int)
 	void valueChanged(const QString &)
-	Ö±½ÓÈçÍ¬ÉÏÃæµÄÁ¬½Óº¯Êı½« QSpinBox::valueChanged ´«Èë connect ×÷Îª signal ±àÒëÆ÷»á±¨´íÒòÎª²»ÖªµÀÓ¦¸ÃÈ¡ÄÄ¸öº¯Êı
-	·½·¨Ò»£º´´½¨Ò»¸öº¯ÊıÖ¸ÕëspinBoxSignal£¬Õâ¸öº¯ÊıÖ¸Õë²ÎÊıÖ¸¶¨Îª int £¬ÏÔÊ¾Ö¸¶¨º¯ÊıvalueChanged(int)
+	ç›´æ¥å¦‚åŒä¸Šé¢çš„è¿æ¥å‡½æ•°å°† QSpinBox::valueChanged ä¼ å…¥ connect ä½œä¸º signal ç¼–è¯‘å™¨ä¼šæŠ¥é”™å› ä¸ºä¸çŸ¥é“åº”è¯¥å–å“ªä¸ªå‡½æ•°
+	æ–¹æ³•ä¸€ï¼šåˆ›å»ºä¸€ä¸ªå‡½æ•°æŒ‡é’ˆspinBoxSignalï¼Œè¿™ä¸ªå‡½æ•°æŒ‡é’ˆå‚æ•°æŒ‡å®šä¸º int ï¼Œæ˜¾ç¤ºæŒ‡å®šå‡½æ•°valueChanged(int)
 		void (QSpinBox:: *spinBoxSignal)(int) = &QSpinBox::valueChanged;
 		QObject::connect(spinBox, spinBoxSignal, slider, &QSlider::setValue);
-	·½·¨¶ş£º
+	æ–¹æ³•äºŒï¼š
 		static_cast<void (QSpinBox:: *)(int)>(&QSpinBox::valueChanged)
 	*/
 	QObject::connect(spinBox, static_cast<void (QSpinBox:: *)(int)>(&QSpinBox::valueChanged),
@@ -91,18 +96,18 @@ ModelessDialog::ModelessDialog(int age, QWidget *parent) : QDialog(parent) {
 
 	QObject::connect(buttonAccept, &QPushButton::clicked,
 		[=](){emit closeModelessDialog(spinBox->value()); QDialog::close(); });
-		/* µ±button±»µã»÷ºó£¬·¢³öcloseModelessDialogĞÅºÅ£¬ÆäĞ¯´øÁËĞÂµÄageÖµ£¬²¢¹Ø±Õµ±Ç°dialog */
+		/* å½“buttonè¢«ç‚¹å‡»åï¼Œå‘å‡ºcloseModelessDialogä¿¡å·ï¼Œå…¶æºå¸¦äº†æ–°çš„ageå€¼ï¼Œå¹¶å…³é—­å½“å‰dialog */
 
 	QHBoxLayout *layout = new QHBoxLayout;
 	layout->addWidget(spinBox);
 	layout->addWidget(slider);
 	layout->addWidget(buttonAccept);
-	/* QT²¼¾Ö¹ÜÀíÆ÷£º
-	QHBoxLayout£º°´ÕÕË®Æ½·½Ïò´Ó×óµ½ÓÒ²¼¾Ö£»
-	QVBoxLayout£º°´ÕÕÊúÖ±·½Ïò´ÓÉÏµ½ÏÂ²¼¾Ö£»
-	QGridLayout£ºÔÚÒ»¸öÍø¸ñÖĞ½øĞĞ²¼¾Ö£¬ÀàËÆÓÚ HTML µÄ table£»
-	QFormLayout£º°´ÕÕ±í¸ñ²¼¾Ö£¬Ã¿Ò»ĞĞÇ°ÃæÊÇÒ»¶ÎÎÄ±¾£¬ÎÄ±¾ºóÃæ¸úËæÒ»¸ö×é¼ş£¨Í¨³£ÊÇÊäÈë¿ò£©£¬ÀàËÆ HTML µÄ form£»
-	QStackedLayout£º²ãµşµÄ²¼¾Ö£¬ÔÊĞíÎÒÃÇ½«¼¸¸ö×é¼ş°´ÕÕ Z Öá·½Ïò¶Ñµş£¬¿ÉÒÔĞÎ³ÉÏòµ¼ÄÇÖÖÒ»Ò³Ò»Ò³µÄĞ§¹û¡£
+	/* QTå¸ƒå±€ç®¡ç†å™¨ï¼š
+	QHBoxLayoutï¼šæŒ‰ç…§æ°´å¹³æ–¹å‘ä»å·¦åˆ°å³å¸ƒå±€ï¼›
+	QVBoxLayoutï¼šæŒ‰ç…§ç«–ç›´æ–¹å‘ä»ä¸Šåˆ°ä¸‹å¸ƒå±€ï¼›
+	QGridLayoutï¼šåœ¨ä¸€ä¸ªç½‘æ ¼ä¸­è¿›è¡Œå¸ƒå±€ï¼Œç±»ä¼¼äº HTML çš„ tableï¼›
+	QFormLayoutï¼šæŒ‰ç…§è¡¨æ ¼å¸ƒå±€ï¼Œæ¯ä¸€è¡Œå‰é¢æ˜¯ä¸€æ®µæ–‡æœ¬ï¼Œæ–‡æœ¬åé¢è·Ÿéšä¸€ä¸ªç»„ä»¶ï¼ˆé€šå¸¸æ˜¯è¾“å…¥æ¡†ï¼‰ï¼Œç±»ä¼¼ HTML çš„ formï¼›
+	QStackedLayoutï¼šå±‚å çš„å¸ƒå±€ï¼Œå…è®¸æˆ‘ä»¬å°†å‡ ä¸ªç»„ä»¶æŒ‰ç…§ Z è½´æ–¹å‘å †å ï¼Œå¯ä»¥å½¢æˆå‘å¯¼é‚£ç§ä¸€é¡µä¸€é¡µçš„æ•ˆæœã€‚
 	*/
 	this->setLayout(layout);
 }
@@ -111,35 +116,35 @@ void testQT_OPENCV::actionOpenModelessDialog(int age)
 {
 	ModelessDialog *dialog = new ModelessDialog(age, this);
 	/*
-	Ó¦ÓÃ¼¶Ä£Ì¬¶Ô»°¿ò(Ê¹ÓÃQDialog::exec()ÊµÏÖ)£º×èÈûÍ¬Ò»Ó¦ÓÃ³ÌĞòÖĞÆäËü´°¿ÚµÄÊäÈë£¬ÊÊÓÃÓÚÈç¡°´ò¿ªÎÄ¼ş¡±¹¦ÄÜ¡£
-										      exec()º¯ÊıµÄÕæÕıº¬ÒåÊÇ¿ªÆôÒ»¸öĞÂµÄÊÂ¼şÑ­»·
-	´°¿Ú¼¶Ä£Ì¬¶Ô»°¿ò(Ê¹ÓÃQDialog::open()ÊµÏÖ)£º¸ÃÄ£Ì¬½ö½ö×èÈûÓë¶Ô»°¿ò¹ØÁªµÄ´°¿Ú£¬µ«ÊÇÒÀÈ»ÔÊĞíÓÃ»§Óë³ÌĞòÖĞÆäËü´°¿Ú½»»¥¡£ÊÊÓÃÓÚ¶à´°¿ÚÄ£Ê½
-		Ä£Ì¬¶Ô»°¿òÒ»°ãÔÚÕ»ÉÏ´´½¨£ºQDialog dialog(this); dialog.exec();
-	·ÇÄ£Ì¬¶Ô»°¿ò(Ê¹ÓÃQDialog::show()ÊµÏÖ)£º·Ç×èÈû£¬Èç²éÕÒ¶Ô»°¿ò£¬¿ÉÒÔÔÚÏÔÊ¾×Å²éÕÒ¶Ô»°¿òµÄÍ¬Ê±£¬¼ÌĞø¶Ô¼ÇÊÂ±¾µÄÄÚÈİ½øĞĞ±à¼­
-		·ÇÄ£Ì¬¶Ô»°¿òÒ»°ãÔÚ¶ÑÉÏ´´½¨£ºQDialog* dialog = new QDialog(this); dialog->setAttribute(Qt::WA_DeleteOnClose); dialog->show();
+	åº”ç”¨çº§æ¨¡æ€å¯¹è¯æ¡†(ä½¿ç”¨QDialog::exec()å®ç°)ï¼šé˜»å¡åŒä¸€åº”ç”¨ç¨‹åºä¸­å…¶å®ƒçª—å£çš„è¾“å…¥ï¼Œé€‚ç”¨äºå¦‚â€œæ‰“å¼€æ–‡ä»¶â€åŠŸèƒ½ã€‚
+										      exec()å‡½æ•°çš„çœŸæ­£å«ä¹‰æ˜¯å¼€å¯ä¸€ä¸ªæ–°çš„äº‹ä»¶å¾ªç¯
+	çª—å£çº§æ¨¡æ€å¯¹è¯æ¡†(ä½¿ç”¨QDialog::open()å®ç°)ï¼šè¯¥æ¨¡æ€ä»…ä»…é˜»å¡ä¸å¯¹è¯æ¡†å…³è”çš„çª—å£ï¼Œä½†æ˜¯ä¾ç„¶å…è®¸ç”¨æˆ·ä¸ç¨‹åºä¸­å…¶å®ƒçª—å£äº¤äº’ã€‚é€‚ç”¨äºå¤šçª—å£æ¨¡å¼
+		æ¨¡æ€å¯¹è¯æ¡†ä¸€èˆ¬åœ¨æ ˆä¸Šåˆ›å»ºï¼šQDialog dialog(this); dialog.exec();
+	éæ¨¡æ€å¯¹è¯æ¡†(ä½¿ç”¨QDialog::show()å®ç°)ï¼šéé˜»å¡ï¼Œå¦‚æŸ¥æ‰¾å¯¹è¯æ¡†ï¼Œå¯ä»¥åœ¨æ˜¾ç¤ºç€æŸ¥æ‰¾å¯¹è¯æ¡†çš„åŒæ—¶ï¼Œç»§ç»­å¯¹è®°äº‹æœ¬çš„å†…å®¹è¿›è¡Œç¼–è¾‘
+		éæ¨¡æ€å¯¹è¯æ¡†ä¸€èˆ¬åœ¨å †ä¸Šåˆ›å»ºï¼šQDialog* dialog = new QDialog(this); dialog->setAttribute(Qt::WA_DeleteOnClose); dialog->show();
 	*/
 	dialog->setAttribute(Qt::WA_DeleteOnClose);
 	/*
-	Èç¹ûÊ¹ÓÃ£º
+	å¦‚æœä½¿ç”¨ï¼š
 	  QDialog dialog(this);
 	  dialog.show();
-	¶Ô»°¿ò»áÒ»ÉÁ¶ø¹ı£¬ ÒòÎª´ËÊ±dialogÔÚÕ»ÉÏ´´½¨£¬show()²»»á×èÈûµ±Ç°Ïß³Ì£¬ËùÒÔµ±¶Ô»°¿ò»áÏÔÊ¾³öÀ´ºó£¬dialog.show()Á¢¼´·µ»Ø£¬
-	´úÂë¼ÌĞøÖ´ĞĞ£¬testQT_OPENCV::ChangeSetting()º¯Êı½áÊø£¬ÔÚÕ»¿Õ¼äµÄ dialog ³¬³ö×÷ÓÃÓò±»Îö¹¹(dialog(this)½«dialog¼ÓÈë¶ÔÏóÊ÷£¬µ«Õ»¿Õ¼äµÄdialogºÎÊ±Îö¹¹Ö÷Òª»¹ÊÇÈ¡¾öÓÚº¯ÊıºÎÊ±½áÊø£¬³ı·ÇdialogµÄparentÏÈ±»Îö¹¹)
-	ËùÒÔ·ÇÄ£Ì¬¶Ô»°¿òÒªÔÚ¶ÑÉÏ´´½¨£º
+	å¯¹è¯æ¡†ä¼šä¸€é—ªè€Œè¿‡ï¼Œ å› ä¸ºæ­¤æ—¶dialogåœ¨æ ˆä¸Šåˆ›å»ºï¼Œshow()ä¸ä¼šé˜»å¡å½“å‰çº¿ç¨‹ï¼Œæ‰€ä»¥å½“å¯¹è¯æ¡†ä¼šæ˜¾ç¤ºå‡ºæ¥åï¼Œdialog.show()ç«‹å³è¿”å›ï¼Œ
+	ä»£ç ç»§ç»­æ‰§è¡Œï¼ŒtestQT_OPENCV::ChangeSetting()å‡½æ•°ç»“æŸï¼Œåœ¨æ ˆç©ºé—´çš„ dialog è¶…å‡ºä½œç”¨åŸŸè¢«ææ„(dialog(this)å°†dialogåŠ å…¥å¯¹è±¡æ ‘ï¼Œä½†æ ˆç©ºé—´çš„dialogä½•æ—¶ææ„ä¸»è¦è¿˜æ˜¯å–å†³äºå‡½æ•°ä½•æ—¶ç»“æŸï¼Œé™¤édialogçš„parentå…ˆè¢«ææ„)
+	æ‰€ä»¥éæ¨¡æ€å¯¹è¯æ¡†è¦åœ¨å †ä¸Šåˆ›å»ºï¼š
 	  QDialog *dialog = new QDialog;
-	µ«ÊÇdialog Ê¹ÓÃ new ÔÚ¶ÑÉÏ·ÖÅä¿Õ¼ä£¬È´Ò»Ö±Ã»ÓĞ delete¡£
-	½â¾ö·½°¸£º½« MainWindow µÄÖ¸Õë¸³¸ø dialog £¬Ê¹Æä¼ÓÈë¶ÔÏóÊ÷
+	ä½†æ˜¯dialog ä½¿ç”¨ new åœ¨å †ä¸Šåˆ†é…ç©ºé—´ï¼Œå´ä¸€ç›´æ²¡æœ‰ deleteã€‚
+	è§£å†³æ–¹æ¡ˆï¼šå°† MainWindow çš„æŒ‡é’ˆèµ‹ç»™ dialog ï¼Œä½¿å…¶åŠ å…¥å¯¹è±¡æ ‘
 	  QDialog *dialog = new QDialog(this);
-	²»¹ıÕâÑù×öÈÔÈ»ÓĞÎÊÌâ£º1.QWidgetµÄparent±ØĞëÊÇQWidgetÖ¸Õë£¬ËùÒÔ²»ÄÜ½«Ò»¸öÆÕÍ¨µÄ C++ ÀàÖ¸Õë´«¸ø Qt ¶Ô»°¿ò¡£
-	2.½«Ö÷´°¿Ú×÷Îª parent Ê±£¬Ö÷´°¿Ú²»¹Ø±Õ£¬¶Ô»°¿ò¾Í²»»á±»Ïú»Ù£¬dialog»áÒ»Ö±Õ¼ÓÃÄÚ´æ¡£
-	ËùÒÔ»¹Ó¦¸ÃÉèÖÃ¶Ô»°¿ò¹Ø±ÕÊ±£¬×Ô¶¯Ïú»Ù¶Ô»°¿ò¡£
+	ä¸è¿‡è¿™æ ·åšä»ç„¶æœ‰é—®é¢˜ï¼š1.QWidgetçš„parentå¿…é¡»æ˜¯QWidgetæŒ‡é’ˆï¼Œæ‰€ä»¥ä¸èƒ½å°†ä¸€ä¸ªæ™®é€šçš„ C++ ç±»æŒ‡é’ˆä¼ ç»™ Qt å¯¹è¯æ¡†ã€‚
+	2.å°†ä¸»çª—å£ä½œä¸º parent æ—¶ï¼Œä¸»çª—å£ä¸å…³é—­ï¼Œå¯¹è¯æ¡†å°±ä¸ä¼šè¢«é”€æ¯ï¼Œdialogä¼šä¸€ç›´å ç”¨å†…å­˜ã€‚
+	æ‰€ä»¥è¿˜åº”è¯¥è®¾ç½®å¯¹è¯æ¡†å…³é—­æ—¶ï¼Œè‡ªåŠ¨é”€æ¯å¯¹è¯æ¡†ã€‚
 	  QDialog *dialog = new QDialog;
 	  dialog->setAttribute(Qt::WA_DeleteOnClose);
 	*/
 
 	dialog->setWindowTitle(tr("Setting"));
-	QObject::connect(dialog, &ModelessDialog::closeModelessDialog, this, &testQT_OPENCV::changeUserAge);
-		/* ½ÓÊÜ½«À´dialog¹Ø±ÕÊ±·¢ËÍ»ØÀ´µÄÖµ£¬²¢µ÷ÓÃchangeUserAge¸üĞÂÖ÷´°¿ÚµÄÏÔÊ¾ */
+    QObject::connect(dialog, &ModelessDialog::closeModelessDialog, this, &testQT_OPENCV::changeUserAge);
+		/* æ¥å—å°†æ¥dialogå…³é—­æ—¶å‘é€å›æ¥çš„å€¼ï¼Œå¹¶è°ƒç”¨changeUserAgeæ›´æ–°ä¸»çª—å£çš„æ˜¾ç¤º */
 	dialog->show();
 }
 
@@ -162,18 +167,18 @@ void testQT_OPENCV::actionOpenModalDialog()
 	else if (returncode == QDialog::Rejected) {
 		QMessageBox::information(this, tr("Info"), tr("Dialog return reject"));
 	}
-	/* Ê¹ÓÃexec()ÏÔÊ¾Ä£Ì¬¶Ô»°¿ò¡£dialogÔÚÕ»¿Õ¼ä´´½¨£¬º¯Êı½áÊøÊ±»á×Ô¶¯Îö¹¹£¬(this)½«¶ÔÏó¼ÓÈë¶ÔÏóÊ÷£¬µ±parentÏÈĞĞÎö¹¹£¬dialogÒ²»á±»Îö¹¹
-	exec()¿ªÊ¼ÁËÒ»¸öÊÂ¼şÑ­»·£¬´úÂë±»×èÈû¡£exec()º¯ÊıÎ´·µ»ØÊ±ºóÃæµÄ´úÂë²»»á±»Ö´ĞĞ¡£¶Ô»°¿ò¹Ø±Õ£¬exec()º¯Êı·µ»Ø£¬´ËÊ±¾Í¿ÉÒÔÈ¡µÃ¶Ô»°¿òµÄÊı¾İ¡£
-	Èç¹ûÉèÖÃ dialog µÄÊôĞÔÎªWA_DeleteOnClose£¬ÄÇÃ´µ±¶Ô»°¿ò¹Ø±ÕÊ±£¬¶ÔÏó±»Ïú»Ù£¬¾Í²»ÄÜÍ¨¹ıexec()µÄ·µ»ØÖµ»ñÈ¡Êı¾İÁË¡£
-	ÔÚÕâÖÖÇé¿öÏÂ£¬¿ÉÒÔ¿¼ÂÇÊ¹ÓÃ parent Ö¸ÕëµÄ·½Ê½¹¹½¨¶Ô»°¿ò£¬±ÜÃâÉèÖÃWA_DeleteOnCloseÊôĞÔ
+	/* ä½¿ç”¨exec()æ˜¾ç¤ºæ¨¡æ€å¯¹è¯æ¡†ã€‚dialogåœ¨æ ˆç©ºé—´åˆ›å»ºï¼Œå‡½æ•°ç»“æŸæ—¶ä¼šè‡ªåŠ¨ææ„ï¼Œ(this)å°†å¯¹è±¡åŠ å…¥å¯¹è±¡æ ‘ï¼Œå½“parentå…ˆè¡Œææ„ï¼Œdialogä¹Ÿä¼šè¢«ææ„
+	exec()å¼€å§‹äº†ä¸€ä¸ªäº‹ä»¶å¾ªç¯ï¼Œä»£ç è¢«é˜»å¡ã€‚exec()å‡½æ•°æœªè¿”å›æ—¶åé¢çš„ä»£ç ä¸ä¼šè¢«æ‰§è¡Œã€‚å¯¹è¯æ¡†å…³é—­ï¼Œexec()å‡½æ•°è¿”å›ï¼Œæ­¤æ—¶å°±å¯ä»¥å–å¾—å¯¹è¯æ¡†çš„æ•°æ®ã€‚
+	å¦‚æœè®¾ç½® dialog çš„å±æ€§ä¸ºWA_DeleteOnCloseï¼Œé‚£ä¹ˆå½“å¯¹è¯æ¡†å…³é—­æ—¶ï¼Œå¯¹è±¡è¢«é”€æ¯ï¼Œå°±ä¸èƒ½é€šè¿‡exec()çš„è¿”å›å€¼è·å–æ•°æ®äº†ã€‚
+	åœ¨è¿™ç§æƒ…å†µä¸‹ï¼Œå¯ä»¥è€ƒè™‘ä½¿ç”¨ parent æŒ‡é’ˆçš„æ–¹å¼æ„å»ºå¯¹è¯æ¡†ï¼Œé¿å…è®¾ç½®WA_DeleteOnCloseå±æ€§
 
-	Ö»ÓĞÄ£Ì¬¶Ô»°¿ò²ÉÓÃ·µ»ØÖµ£¬QDialog::Accepted»òÕßQDialog::Rejected¡£
+	åªæœ‰æ¨¡æ€å¯¹è¯æ¡†é‡‡ç”¨è¿”å›å€¼ï¼ŒQDialog::Acceptedæˆ–è€…QDialog::Rejectedã€‚
 	*/
 }
 
 void testQT_OPENCV::openImageClicked()
 {
-	image = cv::imread("image.jpg");//¶ÁÈ¡Í¼Ïñ
+	image = cv::imread("image.jpg");//è¯»å–å›¾åƒ
 	cv::namedWindow("Input image", 1);
 	cv::imshow("Input image", image);
 }

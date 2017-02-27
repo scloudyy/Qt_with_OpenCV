@@ -1,11 +1,11 @@
-#include "testqt_opencv.h"
+ï»¿#include "testqt_opencv.h"
 #include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-	testQT_OPENCV w;  // w´´½¨ÔÚÕ»¿Õ¼ä£¬±£Ö¤ÁË×î¶¥²ãµÄ MainWindow ÔÚÓ¦ÓÃ¹Ø±ÕÊ±ÄÜ¹»ÕıÈ·ÊÍ·Å
-					  // ²¢ÇÒ×Ó×é¼ş½«w×÷Îª parent ÄÜ¹»Á¬½Ó³ÉÁ´£¬¾Í¿ÉÒÔ±£Ö¤Ã¿Ò»¸ö×é¼ş±»ÕıÈ·ÊÍ·Å
+	testQT_OPENCV w;  // wåˆ›å»ºåœ¨æ ˆç©ºé—´ï¼Œä¿è¯äº†æœ€é¡¶å±‚çš„ MainWindow åœ¨åº”ç”¨å…³é—­æ—¶èƒ½å¤Ÿæ­£ç¡®é‡Šæ”¾
+					  // å¹¶ä¸”å­ç»„ä»¶å°†wä½œä¸º parent èƒ½å¤Ÿè¿æ¥æˆé“¾ï¼Œå°±å¯ä»¥ä¿è¯æ¯ä¸€ä¸ªç»„ä»¶è¢«æ­£ç¡®é‡Šæ”¾
 	w.show();
 	return a.exec();
 }
